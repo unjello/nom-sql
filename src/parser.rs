@@ -12,6 +12,7 @@ use nom::IResult;
 use select::{selection, SelectStatement};
 use set::{set, SetStatement};
 use update::{updating, UpdateStatement};
+use copy::{copying, CopyStatement};
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub enum SqlQuery {
@@ -24,6 +25,7 @@ pub enum SqlQuery {
     DropTable(DropTableStatement),
     Update(UpdateStatement),
     Set(SetStatement),
+    Copy(CopyStatement),
 }
 
 impl fmt::Display for SqlQuery {
@@ -37,6 +39,7 @@ impl fmt::Display for SqlQuery {
             SqlQuery::DropTable(ref drop) => write!(f, "{}", drop),
             SqlQuery::Update(ref update) => write!(f, "{}", update),
             SqlQuery::Set(ref set) => write!(f, "{}", set),
+            SqlQuery::Copy(ref copy) => write!(f, "{}", copy),
             _ => unimplemented!(),
         }
     }
@@ -53,6 +56,7 @@ pub fn sql_query(i: &[u8]) -> IResult<&[u8], SqlQuery> {
         map(updating, |u| SqlQuery::Update(u)),
         map(set, |s| SqlQuery::Set(s)),
         map(view_creation, |vc| SqlQuery::CreateView(vc)),
+        map(copying, |c| SqlQuery::Copy(c)),
     ))(i)
 }
 

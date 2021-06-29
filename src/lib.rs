@@ -29,6 +29,7 @@ pub use self::select::{GroupByClause, JoinClause, LimitClause, SelectStatement};
 pub use self::set::SetStatement;
 pub use self::table::Table;
 pub use self::update::UpdateStatement;
+pub use self::copy::CopyStatement;
 
 pub mod parser;
 
@@ -51,3 +52,4 @@ mod select;
 mod set;
 mod table;
 mod update;
+mod copy;
